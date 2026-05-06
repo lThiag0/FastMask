@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg: #eff6ff;
+            --card: #ffffff;
+            --text-main: #1e3a8a;
+            --text-sub: #64748b;
+            --border: #dbeafe;
+        }
+
+        body { 
+            width: 380px; 
+            font-family: 'Inter', system-ui, sans-serif; 
+            background: var(--bg); 
+            color: var(--text-main); 
+            padding: 24px; 
+            margin: 0; 
+        }
+
+        .header { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .header-left { display: flex; align-items: center; gap: 12px; }
+
+        .logo-icon { 
+            background: var(--primary); 
+            color: white; 
+            width: 36px; height: 36px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 12px; font-size: 20px;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        h2 { font-size: 18px; margin: 0; font-weight: 700; letter-spacing: -0.5px;}
+
+        .btn-manage {
+            background: white;
+            color: var(--primary);
+            border: 1px solid var(--border);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-manage:hover { background: var(--border); }
+
+        .section { 
+            background: var(--card); 
+            border-radius: 16px; 
+            border: 1px solid var(--border); 
+            padding: 20px; 
+            margin-bottom: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); 
+        }
+
+        h3 { 
+            font-size: 11px; 
+            text-transform: uppercase; 
+            color: var(--text-sub); 
+            margin: 0 0 14px 0; 
+            letter-spacing: 1px; font-weight: 700;
+        }
+
+        input, textarea, select { 
+            width: 100%; border: 1px solid var(--border); border-radius: 10px; 
+            padding: 12px; box-sizing: border-box; font-size: 14px; 
+            transition: all 0.2s ease; background: #f8faff; color: var(--text-main);
+            margin-bottom: 12px;
+        }
+
+        input:focus, textarea:focus, select:focus { 
+            outline: none; border-color: var(--primary); background: #fff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); 
+        }
+
+        textarea { height: 80px; resize: none; margin-bottom: 5px; }
+
+        .section {
+            position: relative;
+            margin-bottom: 16px;
+        }
+        
+        .btn-save { 
+            width: 100%; padding: 14px; background: var(--primary); color: white; 
+            border: none; border-radius: 10px; cursor: pointer; font-weight: 600; 
+            font-size: 14px; transition: all 0.2s;
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.15);
+        }
+        .btn-save:hover { background: var(--primary-hover); transform: translateY(-1px); }
+        .btn-save:active { transform: scale(0.98); }
+
+        /* Container que agrupa contador e créditos em uma linha */
+        .footer-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+        }
+
+        .stat-item {
+            font-size: 11px;
+            color: var(--text-sub);
+        }
+
+        .stat-item b {
+            color: var(--primary);
+        }
+
+        .dev-credits {
+            font-size: 11px;
+            color: var(--text-sub);
+            margin: 0; 
+            padding: 0;
+            border: none;
+        }
+
+        .dev-credits a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .btn-error {
+            background-color: #ef4444 !important;
+            animation: shake 0.2s ease-in-out 0s 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <div class="logo-icon">⚡</div>
+            <h2>FastMask <span style="color: var(--primary)">Turbo</span></h2>
+        </div>
+        <button id="openManager" class="btn-manage">
+            ⚙️ Gerenciar
+        </button>
+    </div>
+
+    <div class="section">
+        <h3>Gatilho Global</h3>
+        <input type="text" id="triggerInput" placeholder="Ex: // ou ;; ">
+    </div>
+
+    <div class="section">
+        <h3>Novo Atalho</h3>
+
+        <div style="position: relative; display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <button id="emojiBtn" title="Inserir Emoji" style="background:none; border:none; cursor:pointer; font-size: 20px; padding:0;">📄</button>
+            <input type="text" id="short" placeholder="Atalho (ex: Turbo)" style="margin-bottom: 0;">
+        </div>
+
+        <div id="duplicateBadge" style="display: none; color: #ef4444; font-size: 11px; font-weight: 700; margin-bottom: 10px; margin-left: 32px;">
+            ⚠️ Este nome já existe!
+        </div>
+        
+        <textarea id="long" placeholder="Texto completo..."></textarea>
+
+        <div id="categorySelectWrapper">
+        <select id="categoryInput">
+            </select>
+        </div>
+
+        <div id="newCategoryWrapper" style="display: none; gap: 8px; margin-bottom: 12px;">
+            <input type="text" id="newCategoryName" placeholder="Nome da nova categoria..." style="margin-bottom: 0;">
+            <div style="display: flex; gap: 4px;">
+                <button id="confirmCat" style="background: var(--primary); color: white; border: none; border-radius: 8px; padding: 0 12px; cursor: pointer;">✅</button>
+                <button id="cancelCat" style="background: #f1f5f9; border: none; border-radius: 8px; padding: 0 12px; cursor: pointer;">❌</button>
+            </div>
+        </div>
+
+        <button id="save" class="btn-save">Adicionar</button>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="stat-item">
+            Atalhos Ativos: <b id="statCount">0</b>
+        </div>
+
+        <div class="dev-credits">
+            Criado por: <a href="https://github.com/lThiag0" target="_blank">Thiago Araujo</a>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

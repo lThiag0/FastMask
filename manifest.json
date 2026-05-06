@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "FastMask Turbo Pro",
+  "version": "1.2",
+  "author": "Thiago Araujo",
+  "description": "Produtividade máxima com expansão de texto inteligente. Crie atalhos personalizados com suporte a emojis e dashboard de gerenciamento premium.",
+  "permissions": ["storage"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "options_page": "manager.html",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["styles.css"]
+    }
+  ]
+}
