@@ -76,17 +76,33 @@ document.addEventListener('input', (e) => {
 
     const val = el.value || el.innerText || "";
     
-    if (val.includes(currentTrigger)) {
-        activeElement = el;
-        
-        const parts = val.split(currentTrigger);
-        const searchTerm = parts[parts.length - 1].toLowerCase();
+    if (val.trim() === "") {
+        closeAll();
+        return;
+    }
 
+    const triggerRegex = new RegExp(`(?:^|\\s)${currentTrigger.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}([^\\s]*)$`);
+    const match = val.match(triggerRegex);
+
+    if (match) {
+        activeElement = el;
+        const searchTerm = match[1].toLowerCase();
         const coords = getCaretCoordinates(el);
         
         openMenu(coords.left, coords.top, searchTerm);
     } else {
         closeMenuOnly();
+    }
+});
+
+document.addEventListener('keyup', (e) => {
+    if (e.key === 'Backspace' || e.key === 'Delete') {
+        const el = e.target;
+        const val = el.value || el.innerText || "";
+        
+        if (!val.includes(currentTrigger)) {
+            closeMenuOnly();
+        }
     }
 });
 
@@ -215,6 +231,7 @@ function showShortcutsByCategory(category, allShortcuts) {
 function renderShortcutItem(container, key, data, index, searchTerm) {
     const div = document.createElement('div');
     div.className = `menu-itemFastMask ${index === selectedIndex ? 'selected' : ''}`;
+    div.setAttribute('data-key', key);
     
     const isObj = typeof data === 'object' && data !== null;
     const contentText = isObj ? data.value : data;
