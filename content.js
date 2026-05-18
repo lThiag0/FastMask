@@ -268,23 +268,25 @@ function insertText(key, searchTerm = "", forcedContent = null) {
 
     if (!replacement) return;
 
-    const val = activeElement.value || activeElement.innerText || "";
+    const escapedTrigger = currentTrigger.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const escapedTerm = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     
-    const triggerAndTerm = currentTrigger + searchTerm;
-    
-    let baseText;
+    const replaceRegex = new RegExp(`${escapedTrigger}${escapedTerm}$`, 'i');
+
     if (activeElement.isContentEditable) {
         const content = activeElement.innerText;
-        baseText = content.endsWith(triggerAndTerm) 
-            ? content.slice(0, -triggerAndTerm.length) 
-            : content;
-        activeElement.innerText = baseText + replacement;
+        if (replaceRegex.test(content)) {
+            activeElement.innerText = content.replace(replaceRegex, replacement);
+        } else {
+            activeElement.innerText = content + replacement;
+        }
     } else {
         const content = activeElement.value;
-        baseText = content.endsWith(triggerAndTerm) 
-            ? content.slice(0, -triggerAndTerm.length) 
-            : content;
-        activeElement.value = baseText + replacement;
+        if (replaceRegex.test(content)) {
+            activeElement.value = content.replace(replaceRegex, replacement);
+        } else {
+            activeElement.value = content + replacement;
+        }
     }
     
     closeAll();
